@@ -16,9 +16,29 @@
     </head>
     <center>
     <body background="download.jpg">
-    <div class="btn btn-success" id=status>status</div>
-    <button class="btn btn-success button" onclick="start()">start</button>
+        <h3 style="color: red;">PING PONG</h3>
+        <button class="btn btn-success" data-toggle="modal" data-target="#mymodal">instructions</button>
+        <div class="btn btn-danger" id=status>status</div>
+    <button class="btn btn-primary" onclick="start()">start</button>
+    <div id="mymodal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>instructions</h4>
+          <button class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        1.keep your laptop straight.
+        2.move yourself 3-4 feet from laptop.
+        3.move your right wrist in an ascending and descending manner.Red ot should appear on your wrist.
+        4.now press the play button,again move yourself 3-4 feet from laptop.
+        5.red paddel is your paddel,it will move according your wrist movement.
+        </div>
+    </div>
+    </div>
+ </div>
 </center>
+
         <script src="main.js"></script>
     </body>
 </html>

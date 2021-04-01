@@ -3,11 +3,6 @@ body
 background-size: cover;
 }
 
-#status {
-margin-bottom: 1000px;
-margin-left: 400px;
-}
-
-.button {
-margin-bottom: 1000px;
+.modal-dialog {
+width:80%;
 }
