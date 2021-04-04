@@ -22,7 +22,25 @@ var ball = {
 }
 
 function setup(){
-  var canvas =  createCanvas(700,600);
+canvas = createCanvas(1240,336);
+canvas.parent("canvas");
+instializeInSetup(mario);
+video=createCapture(VIDEO);
+video.size(800,400);
+video.parent("game_console");
+posenet=ml5.poseNet(video,modeloaded);
+posenet.on('pose',getposes);
+}
+
+function modeloaded() {
+console.log(results);
+}
+  
+function getposes(results) {
+if (results.length>0) {
+nosex=results[0].pose.nose.x;
+nosey=results[0].pose.nose.y;
+}
 }
 
 
