@@ -1,4 +1,5 @@
-
+nosex=0;
+nosey=0;
 /*created by prashant shukla */
 
 var paddle2 =10,paddle1=10;
@@ -24,10 +25,10 @@ var ball = {
 function setup(){
 canvas = createCanvas(1240,336);
 canvas.parent("canvas");
-instializeInSetup(mario);
+instializeInSetup(pingpong);
 video=createCapture(VIDEO);
 video.size(800,400);
-video.parent("game_console");
+video.parent("modal-body");
 posenet=ml5.poseNet(video,modeloaded);
 posenet.on('pose',getposes);
 }
@@ -40,6 +41,8 @@ function getposes(results) {
 if (results.length>0) {
 nosex=results[0].pose.nose.x;
 nosey=results[0].pose.nose.y;
+rightwristx=nosex;
+rightwristy=nosey;
 }
 }
 
