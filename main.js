@@ -1,5 +1,7 @@
-nosex=0;
-nosey=0;
+rightwristx=0;
+rightwristy=0;
+rightwrist_score=0;
+gamestatus=0;
 /*created by prashant shukla */
 
 var paddle2 =10,paddle1=10;
@@ -22,35 +24,44 @@ var ball = {
     dy:3
 }
 
+function preload() {
+ball_touch=loadSound("ball_touch_paddel.wav");
+missed=loadSound("missed.wav");
+}
+
 function setup(){
-canvas = createCanvas(1240,336);
+canvas = createCanvas(700,600);
 canvas.parent("canvas");
-instializeInSetup(pingpong);
 video=createCapture(VIDEO);
-video.size(800,400);
-video.parent("modal-body");
+video.size(700,600);
+video.hide();
 posenet=ml5.poseNet(video,modeloaded);
 posenet.on('pose',getposes);
 }
 
 function modeloaded() {
-console.log(results);
+console.log("model loaded");
 }
   
 function getposes(results) {
 if (results.length>0) {
-nosex=results[0].pose.nose.x;
-nosey=results[0].pose.nose.y;
-rightwristx=nosex;
-rightwristy=nosey;
+rightwristx=results[0].pose.rightWrist.x;
+rightwristy=results[0].pose.rightWrist.y;
+console.log(results);
+rightwrist_score=results[0].pose.keypoints[10].score;
 }
+}
+
+function start() {
+gamestatus="start"
+document.getElementById("status").innerHTML="status:game is loading";
 }
 
 
 function draw(){
-
+if(gamestatus=="start") {
  background(0); 
-
+image(video,0,0,700,600);
  fill("black");
  stroke("black");
  rect(680,0,20,700);
@@ -58,6 +69,12 @@ function draw(){
  fill("black");
  stroke("black");
  rect(0,0,20,700);
+ if(rightwrist_score>0.2) {
+fill(red);
+stroke(goldenrod);
+strokeWeight(4);
+circle(rightwristx,rightwristy,30);
+ }
  
    //funtion paddleInCanvas call 
    paddleInCanvas();
@@ -66,7 +83,7 @@ function draw(){
    fill(250,0,0);
     stroke(0,0,250);
     strokeWeight(0.5);
-   paddle1Y = mouseY; 
+   paddle1Y = rightwristy; 
    rect(paddle1X,paddle1Y,paddle1,paddle1Height,100);
    
    
@@ -86,6 +103,7 @@ function draw(){
    
    //function move call which in very important
     move();
+}
 }
 
 
@@ -138,11 +156,13 @@ function move(){
   if (ball.x-2.5*ball.r/2< 0){
   if (ball.y >= paddle1Y&& ball.y <= paddle1Y + paddle1Height) {
     ball.dx = -ball.dx+0.5; 
+    ball_touch.play();
   }
   else{
     pcscore++;
     reset();
     navigator.vibrate(100);
+    missed.play();
   }
 }
 if(pcscore ==4){
@@ -153,7 +173,7 @@ if(pcscore ==4){
     stroke("white");
     textSize(25)
     text("Game Over!☹☹",width/2,height/2);
-    text("Reload The Page!",width/2,height/2+30)
+    text("press restart to replay!",width/2,height/2+30)
     noLoop();
     pcscore = 0;
 }
@@ -183,3 +203,8 @@ function paddleInCanvas(){
     mouseY =0;
   }  
 }
+
+function restart() {
+loop();
+pcscore=0;
+} 
